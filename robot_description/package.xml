@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<package>
+	<name>robot_description</name>
+	<version>0.0.1</version>
+	<description>The robot description package</description>
+	<maintainer email="rodosha98@gmail.com">Oleg Rodionov</maintainer>
+	<license>MIT</license>
+	<buildtool_depend>catkin</buildtool_depend>
+</package>
