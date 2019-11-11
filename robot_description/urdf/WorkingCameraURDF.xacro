@@ -90,10 +90,6 @@
 <!-- -                         -->
    </link>
 
-<gazebo reference="base_link">
-          <material>Gazebo/Wood</material>
-</gazebo>
-
 <!-- JOINT 1 -->
   <joint name="first_joint" type="revolute">
     <origin rpy="0 0 0" xyz="0 0 ${size1_z}"/>
@@ -142,10 +138,6 @@
       <xacro:default_inertial mass="100"/>
    </link>
 
-<gazebo reference="first_link">
-          <material>Gazebo/Blue</material>
-</gazebo>
-
 <!-- JOINT 2 -->
   <joint name="second_joint" type="prismatic">
     <origin rpy="0 0 0" xyz="0 0 ${len1}"/>
@@ -191,9 +183,6 @@
   </collision>
       <xacro:default_inertial mass="1"/>
    </link>
-<gazebo reference="second_link">
-          <material>Gazebo/Red</material>
-</gazebo>
 
 <!-- JOINT 3 -->
   <joint name="third_joint" type="revolute">
@@ -238,9 +227,6 @@
   </collision>
       <xacro:default_inertial mass="20"/>
    </link>
-<gazebo reference="third_link">
-          <material>Gazebo/Yellow</material>
-</gazebo>
 
 <!-- JOINT 4 --> 
   <joint name="fourth_joint" type="revolute">
@@ -285,10 +271,6 @@
   </collision>
       <xacro:default_inertial mass="10"/>
    </link>
-<gazebo reference="fourth_link">
-          <material>Gazebo/Green</material>
-</gazebo>
-
 
 <!-- JOINT 5 --> 
   <joint name="fifth_joint" type="revolute">
@@ -333,10 +315,6 @@
       <xacro:default_inertial mass="4"/>
    </link>
 
-<gazebo reference="fifth_link">
-          <material>Gazebo/Purple</material>
-</gazebo>
-
 <!-- JOINT 6 --> 
   <joint name="sixth_joint" type="revolute">
     <origin rpy="${90*DEG2RAD} 0 0" xyz="0 0 ${len5}"/>
@@ -379,9 +357,6 @@
   </collision>
       <xacro:default_inertial mass="2"/>
    </link>
-<gazebo reference="sixth_link">
-          <material>Gazebo/Grass</material>
-</gazebo>
 
 <!-- JOINT 7 --> 
   <joint name="seventh_joint" type="fixed">
@@ -504,7 +479,7 @@
 
 <!-- Camera Joint-->
 	<joint name="camera_joint" type="fixed">
-		<axis xyz = "-1 0 0" />
+		<axis xyz = "1 0 0" />
     	<origin rpy="0 ${90*DEG2RAD} 0" xyz="0 0 ${len6}"/>
     	<parent link="sixth_link"/>
    		<child link="camera_link"/>
@@ -534,11 +509,10 @@
     </inertial>
   </link>
 <!-- Camera Colour-->
-    <gazebo reference="camera_link">
+	<gazebo reference="camera_link">
           <material>Gazebo/Orange</material>
     </gazebo>
 
-<!-- Plugin for control-->
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <robotNamespace>/manipulator</robotNamespace>
@@ -546,49 +520,6 @@
     </plugin>
   </gazebo>
 
-
-<!-- Camera Plugin-->
-
-  <gazebo reference="camera_link">
-    <sensor type="camera" name="camera1">
-      <update_rate>30.0</update_rate>
-      <camera name="head">
-        <horizontal_fov>1.3962634</horizontal_fov>
-        <image>
-          <width>800</width>
-          <height>800</height>
-          <format>R8G8B8</format>
-        </image>
-        <clip>
-          <near>0.02</near>
-          <far>300</far>
-        </clip>
-        <noise>
-          <type>gaussian</type>
-          <!-- Noise is sampled independently per pixel on each frame.
-               That pixel's noise value is added to each of its color
-               channels, which at that point lie in the range [0,1]. -->
-          <mean>0.0</mean>
-          <stddev>0.007</stddev>
-        </noise>
-      </camera>
-<!-- Camera Controller-->
-      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>0.0</updateRate>
-        <cameraName>manipulator/camera1</cameraName>
-        <imageTopicName>image_raw</imageTopicName>
-        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>camera_link</frameName>
-        <hackBaseline>0.07</hackBaseline>
-        <distortionK1>0.0</distortionK1>
-        <distortionK2>0.0</distortionK2>
-        <distortionK3>0.0</distortionK3>
-        <distortionT1>0.0</distortionT1>
-        <distortionT2>0.0</distortionT2>
-      </plugin>
-    </sensor>
-  </gazebo>
 
 
 
