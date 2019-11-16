@@ -1,0 +1,531 @@
+<?xml version="1.0"?>
+<robot name="manipulator" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:include filename="$(find robot_description)/urdf/FromDegtoRad.xacro"/>
+<xacro:include filename="$(find robot_description)/urdf/Inertial.xacro"/>
+<!-- Joints and Links Names-->
+<!-- Parameters that you can change-->
+
+<!-- Base link-->
+<xacro:property name = "size1_x" value= "1"/>
+<xacro:property name = "size1_y" value= "1"/>
+<xacro:property name = "size1_z" value= "0.1"/>
+
+<!-- link 1-->
+<xacro:property name = "len1" value= "0.5"/>
+<xacro:property name = "rad1" value= "0.2"/>
+
+<!-- link 2-->
+<xacro:property name = "size2_x" value= "0.2"/>
+<xacro:property name = "size2_y" value= "0.2"/>
+<xacro:property name = "size2_z" value= "0.8"/>
+
+<!-- link 3-->
+<xacro:property name = "roll" value= "60"/>
+<xacro:property name = "len3" value= "0.6"/>
+<xacro:property name = "rad3" value= "0.075"/>
+
+<!-- link 4-->
+<xacro:property name = "len4" value= "0.25"/>
+<xacro:property name = "rad4" value= "0.05"/>
+
+<!-- link 5-->
+<xacro:property name = "len5" value= "0.1"/>
+<xacro:property name = "rad5" value= "0.03"/>
+
+<!-- link 6-->
+<xacro:property name = "len6" value= "0.15"/>
+<xacro:property name = "rad6" value= "0.02"/>
+
+<!-- link 7-->
+<xacro:property name = "len7" value= "0.15"/>
+<xacro:property name = "rad7" value= "0.02"/>
+
+<!-- link 8-->
+<xacro:property name = "len8" value= "0.1"/>
+<xacro:property name = "rad8" value= "0.01"/>
+
+<!-- link 9 the same as 8-->
+
+<!-- Camera link -->
+<xacro:property name = "camera_width" value= "0.05"/>
+<xacro:property name = "camera_height" value= "0.1"/>
+
+
+
+
+<!-- Base link - box-->
+
+<!-- Definition and Geometry of world frame-->
+  <link name="world_link"/>
+
+<!-- zero_joint -->
+  <joint name="zero_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="world_link"/>
+    <child link="base_link"/>
+  </joint>
+
+<!-- Definition and Geometry of base link-->
+
+  <link name="base_link">
+   <visual>
+    <origin rpy="0 0 0" xyz="0 0 ${size1_z/2}"/>
+     <geometry>
+	 <box size = "${size1_x} ${size1_y} ${size1_z}"/>
+     </geometry>
+<!-- Material and color of 0 -->
+   <material name = "blue">
+     <color rgba = "0 0 0.8 1"/>
+   </material>
+   </visual>
+  <collision>
+       <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size = "${size1_x} ${size1_y} ${size1_z}"/>
+      </geometry>
+  </collision>
+      <xacro:default_inertial mass="1000"/>
+
+<!-- -                         -->
+   </link>
+
+<!-- JOINT 1 -->
+  <joint name="first_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 ${size1_z}"/>
+    <parent link="base_link"/>
+    <child link="first_link"/>
+    <axis xyz="0 0 1"/>
+     <limit effort="0" lower="-${90*DEG2RAD}" upper="${90*DEG2RAD}" velocity="1"/>
+  </joint>
+
+
+
+<!-- Transmission 1 -->
+<transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="first_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>  
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+
+
+<!-- Definition and Geometry of FIRST 1  link-->
+
+  <link name="first_link">
+   <visual>
+    <origin rpy="0 0 0" xyz="0 0 ${len1/2}"/>
+     <geometry>
+	<cylinder radius = "${rad1}" length = "${len1}"/>
+     </geometry>
+<!-- Material and color of 1st -->
+    <material name = "red">
+     <color rgba = "0.8 0 0 1"/>
+    </material>
+   </visual>
+  <collision>
+      <origin rpy="0 0 0" xyz="0 0 ${len1/2}"/>
+     <geometry>
+	<cylinder radius = "${rad1}" length = "${len1}"/>
+     </geometry>
+  </collision>
+      <xacro:default_inertial mass="100"/>
+   </link>
+
+<!-- JOINT 2 -->
+  <joint name="second_joint" type="prismatic">
+    <origin rpy="0 0 0" xyz="0 0 ${len1}"/>
+    <parent link="first_link"/>
+    <child link="second_link"/>
+    <axis xyz="0 0 1"/>
+     <limit effort="10000" lower="0" upper="0.4" velocity="0.5"/>
+  </joint>
+
+<!-- TRANSMITTION 2 -->
+<transmission name="tran2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="second_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>  
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+
+<!-- Definition and Geometry of SECOND 2 link-->
+
+  <link name="second_link">
+   <visual>
+    <origin rpy="0 0 0" xyz="0 0 ${-size2_z/2+0.3}"/>
+     <geometry>
+	<box size = "${size2_x} ${size2_y} ${size2_z}"/>
+     </geometry>
+<!-- Material and color of 2st -->
+    <material name = "green">
+     <color rgba = "0 0.8 0 1"/>
+    </material>
+   </visual>
+  <collision>
+      <origin rpy="0 0 0" xyz="0 0 ${-size2_z/2+0.3}"/>
+     <geometry>
+	<!-- <box size = "${size2_x} ${size2_y} ${size2_z}"/> -->
+	<box size = "0 0 0"/>
+     </geometry>
+  </collision>
+      <xacro:default_inertial mass="1"/>
+   </link>
+
+<!-- JOINT 3 -->
+  <joint name="third_joint" type="revolute">
+    <origin rpy="${-roll*DEG2RAD} 0 0" xyz="0 0 0.3"/>
+    <parent link="second_link"/>
+    <child link="third_link"/>
+    <axis xyz="1 0 0"/>
+     <limit effort="1000" lower="-${45*DEG2RAD}" upper="${45*DEG2RAD}" velocity="0.5"/>
+  </joint>
+
+
+<!-- TRANSMITTION 3 -->
+<transmission name="tran3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="third_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>  
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<!-- Definition and Geometry of THIRD 3 link-->
+
+  <link name="third_link">
+   <visual>
+       <origin rpy="0 0 0" xyz="0 0 ${len3/2}"/>
+     <geometry>
+	<cylinder radius = "${rad3}" length = "${len3}"/>
+     </geometry>
+<!-- Material and color of 3st -->
+    <material name = "yellow">
+     <color rgba = "0.9 0.9 0 1"/>
+    </material>
+   </visual>
+  <collision>
+       <origin rpy="0 0 0" xyz="0 0 ${len3/2}"/>
+     <geometry>
+	<cylinder radius = "${rad3}" length = "${len3}"/>
+     </geometry>
+  </collision>
+      <xacro:default_inertial mass="20"/>
+   </link>
+
+<!-- JOINT 4 --> 
+  <joint name="fourth_joint" type="revolute">
+    <origin rpy="${-(180-roll)*DEG2RAD} 0 0" xyz="0 0 ${len3}"/>
+     <parent link="third_link"/>
+     <child link="fourth_link"/>
+    <axis xyz="1 0 0"/>
+     <limit effort="1000" lower="0" upper="${180*DEG2RAD}" velocity="0.5"/>
+  </joint>
+
+
+<!-- TRANSMITTION 4 -->
+<transmission name="tran4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="fourth_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor4">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>  
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<!-- Definition and Geometry of FOURTH 4 link-->
+
+  <link name="fourth_link">
+   <visual>
+       <origin rpy="0 0 0" xyz="0 0 ${len4/2}"/>
+     <geometry>
+	<cylinder radius = "${rad4}" length = "${len4}"/>
+     </geometry>
+<!-- Material and color of 4st -->
+    <material name = "grey">
+     <color rgba = "0.9 0.9 0.9 1"/>
+    </material>
+   </visual>
+  <collision>
+       <origin rpy="0 0 0" xyz="0 0 0.125"/>
+     <geometry>
+	<cylinder radius = "${rad4}" length = "${len4}"/>
+     </geometry>
+  </collision>
+      <xacro:default_inertial mass="10"/>
+   </link>
+
+<!-- JOINT 5 --> 
+  <joint name="fifth_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 ${len4}"/>
+     <parent link="fourth_link"/>
+     <child link="fifth_link"/>
+    <axis xyz="0 0 1"/>
+     <limit effort="1000" lower="-${90*DEG2RAD}" upper="${90*DEG2RAD}" velocity="1"/>
+  </joint>
+
+<!-- TRANSMITTION 5 -->
+<transmission name="tran5">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="fifth_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor5">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>  
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<!-- Definition and Geometry of FIFTH 5 link-->
+
+  <link name="fifth_link">
+   <visual>
+       <origin rpy="0 0 0" xyz="0 0 ${len5/2}"/>
+     <geometry>
+	<cylinder radius = "${rad5}" length = "${len5}"/>
+     </geometry>
+<!-- Material and color of 5st -->
+    <material name = "white">
+     <color rgba = "1 1 1 1"/>
+    </material>
+   </visual>
+  <collision>
+       <origin rpy="0 0 0" xyz="0 0 ${len5/2}"/>
+     <geometry>
+	<cylinder radius = "${rad5}" length = "${len5}"/>
+     </geometry>
+  </collision>
+      <xacro:default_inertial mass="4"/>
+   </link>
+
+<!-- JOINT 6 --> 
+  <joint name="sixth_joint" type="revolute">
+    <origin rpy="${90*DEG2RAD} 0 0" xyz="0 0 ${len5}"/>
+     <parent link="fifth_link"/>
+     <child link="sixth_link"/>
+    <axis xyz="1 0 0"/>
+     <limit effort="1000" lower="-${180*DEG2RAD}" upper="0" velocity="1"/>
+  </joint>
+
+<!-- TRANSMITTION 6 -->
+<transmission name="tran6">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="sixth_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor6">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>  
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<!-- Definition and Geometry of SIXTH 6 link-->
+
+  <link name="sixth_link">
+   <visual>
+       <origin rpy="0 0 0" xyz="0 0 ${len6/2}"/>
+     <geometry>
+	<cylinder radius = "${rad6}" length = "${len6}"/>
+     </geometry>
+<!-- Material and color of 6st -->
+    <material name = "purple">
+     <color rgba = "0.64 0.05 0.97 1"/>
+    </material>
+   </visual>
+  <collision>
+       <origin rpy="0 0 0" xyz="0 0 ${len6/2}"/>
+     <geometry>
+	<cylinder radius = "${rad6}" length = "${len6}"/>
+     </geometry>
+  </collision>
+      <xacro:default_inertial mass="2"/>
+   </link>
+
+<!-- JOINT 7 --> 
+  <joint name="seventh_joint" type="fixed">
+    <origin rpy="0 ${90*DEG2RAD} 0" xyz="0 0 ${len6}"/>
+     <parent link="sixth_link"/>
+     <child link="seventh_link"/>
+  </joint>
+
+
+<!-- Definition and Geometry of SEVENTH 7 link-->
+
+  <link name="seventh_link">
+   <visual>
+       <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+	<cylinder radius = "${rad7}" length = "${len7}"/>
+     </geometry>
+<!-- Material and color of 7 -->
+    <material name = "purple">
+     <color rgba = "0.64 0.05 0.97 1"/>
+    </material>
+   </visual>
+  <collision>
+       <origin rpy="0 0 0" xyz="0 0 0"/>
+     <geometry>
+	<cylinder radius = "${rad7}" length = "${len7}"/>
+     </geometry>
+  </collision>
+      <xacro:default_inertial mass="1"/>
+   </link>
+
+<!-- JOINT 8 --> 
+  <joint name="eighth_joint" type="revolute">
+    <origin rpy="0 -${90*DEG2RAD} 0" xyz="0 0 ${len7/2}"/>
+     <parent link="seventh_link"/>
+     <child link="eighth_link"/>
+    <axis xyz="0 1 0"/>
+     <limit effort="1000" lower="-${30*DEG2RAD}" upper="${30*DEG2RAD}" velocity="1"/>
+  </joint>
+
+<!-- TRANSMITTION 8 -->
+<transmission name="tran8">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="eighth_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor8">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>  
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<!-- Definition and Geometry of SIXTH 8 link-->
+
+  <link name="eighth_link">
+   <visual>
+       <origin rpy="0 0 0" xyz="0 0 ${len8/2}"/>
+     <geometry>
+	<cylinder radius = "${rad8}" length = "${len8}"/>
+     </geometry>
+<!-- Material and color of 8st -->
+    <material name = "yellow2">
+     <color rgba = "1 1 0 1"/>
+    </material>
+   </visual>
+  <collision>
+       <origin rpy="0 0 0" xyz="0 0 ${len8/2}"/>
+     <geometry>
+	<cylinder radius = "${rad8}" length = "${len8}"/>
+     </geometry>
+  </collision>
+     <xacro:default_inertial mass="0.5"/>
+   </link>
+
+<!-- JOINT 9 --> 
+  <joint name="nineth_joint" type="revolute">
+    <origin rpy="0 -${90*DEG2RAD} 0" xyz="0 0 -${len7/2}"/>
+     <parent link="seventh_link"/>
+     <child link="nineth_link"/>
+    <axis xyz="0 1 0"/>
+      <limit effort="1000" lower="-${30*DEG2RAD}" upper="${30*DEG2RAD}" velocity="1"/>
+  </joint>
+
+<!-- TRANSMITTION 9 -->
+<transmission name="tran9">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="nineth_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor9">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>  
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<!-- Definition and Geometry of NINETH 9 link-->
+
+  <link name="nineth_link">
+   <visual>
+       <origin rpy="0 0 0" xyz="0 0 ${len8/2}"/>
+     <geometry>
+	<cylinder radius = "${rad8}" length = "${len8}"/>
+     </geometry>
+<!-- Material and color of 8st -->
+    <material name = "yellow2">
+     <color rgba = "1 1 0 1"/>
+    </material>
+   </visual>
+  <collision>
+       <origin rpy="0 0 0" xyz="0 0 ${len8/2}"/>
+     <geometry>
+	<cylinder radius = "${rad8}" length = "${len8}"/>
+     </geometry>
+  </collision>
+      <xacro:default_inertial mass="0.5"/>
+   </link>
+
+
+<!-- CAMERA to the 7 Fixed Link-->
+
+<!-- Camera Joint-->
+	<joint name="camera_joint" type="fixed">
+		<axis xyz = "1 0 0" />
+    	<origin rpy="0 ${90*DEG2RAD} 0" xyz="0 0 ${len6}"/>
+    	<parent link="sixth_link"/>
+   		<child link="camera_link"/>
+ 	</joint>
+
+<!-- Camera Link-->
+ <link name="camera_link">
+    <collision>
+      <origin xyz=" ${-camera_height/2} 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_height} ${camera_width} ${camera_width}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="${-camera_height/2}  0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_height} ${camera_width} ${camera_width}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+<!-- Camera Colour-->
+	<gazebo reference="camera_link">
+          <material>Gazebo/Orange</material>
+    </gazebo>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/manipulator</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+
+
+
+
+
+
+
+</robot>
+
