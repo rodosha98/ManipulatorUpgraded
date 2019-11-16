@@ -20,8 +20,10 @@
    	 output="screen" ns="/manipulator" args="joint_state_controller joint1_position_controller
 		joint2_position_controller joint3_position_controller joint4_position_controller
 		joint5_position_controller joint6_position_controller joint8_position_controller joint9_position_controller"/>
-
-	<node pkg="control_pkg" name="mtnode" type="camera.py" output="screen">
+	
+	<node pkg="control_pkg" name="control" type="control.py" output="screen">
+	</node>
+	<node pkg="control_pkg" name="camera" type="camera.py" output="screen">
 	</node>
 
 </launch>
