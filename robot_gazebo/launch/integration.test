@@ -3,6 +3,11 @@
 	<env name="LC_NUMERIC" value="en_US.UTF-8"/>
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="physics" value="ode" /> <!-- ode, bullet, dart or simbody -->
+  		<arg name="paused" value="false" />
+  		<arg name="verbose" value="false" />
+  		<arg name="gui" value="false" />
+		
 	</include>
 
 	<param name="robot_description" command="xacro '$(find robot_description)/urdf/robot.urdf.xacro'"/>
@@ -19,11 +24,11 @@
   	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
    	 output="screen" ns="/manipulator" args="joint_state_controller joint1_position_controller
 		joint2_position_controller joint3_position_controller joint4_position_controller
-		joint5_position_controller joint6_position_controller joint8_position_controller joint9_position_controller --timeout 50"/>
+		joint5_position_controller joint6_position_controller joint8_position_controller joint9_position_controller"/>
 
-	<node name="publish" pkg="tests" type="publisher.py" output="screen">
- 	</node>
+	
+	<test test-name="integration" pkg="control_pkg" type="integration.py" />
 
-	<node name="subscribe" pkg="tests" type="subscriber.py" output="screen">
- 	</node>
 </launch>
+
+

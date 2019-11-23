@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+	<test test-name="unit" pkg="control_pkg" type="unitTest.py" />
+</launch>
+
+
