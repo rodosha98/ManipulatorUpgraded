@@ -8,11 +8,8 @@ import time
 
 def move_joint(joint_num, min, max, pub):
 	pos = random.uniform(min,max)
-	if not rospy.is_shutdown():
-		hello_str = "Joint world! %s" % rospy.get_time()
-		position = pos
-		rospy.loginfo(position)
-		pub.publish(position)
+	while not rospy.is_shutdown():
+		pub.publish(pos)
 		rate.sleep()
 
 if __name__ == '__main__':
