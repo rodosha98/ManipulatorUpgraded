@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/rodosha98/ManipulatorUpgraded.svg?branch=badges)](https://travis-ci.org/rodosha98/ManipulatorUpgraded)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?branch=badges)](http://opensource.org/licenses/MIT)
-[![Issues](http://img.shields.io/github/issues/USER/REPO.svg?branch = badges)](https://github.com/rodosha98/ManipulatorUpgraded/issues)
+[![Issues](http://img.shields.io/github/issues/rodosha98/ManipulatorUpgraded.svg?branch=badges)](https://github.com/rodosha98/ManipulatorUpgraded/issues)
 
 # Manipulator - ROS Project 
 It's a model of Industrial Manipulator KUKA. Full description you can read in File "Robot Description". 
