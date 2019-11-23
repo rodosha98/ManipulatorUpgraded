@@ -5,7 +5,6 @@ import rostest
 import unittest
 
 from std_msgs.msg import Float64
-from sensor_msgs.msg import JointState
 from control_msgs.msg import JointControllerState
 import math
 import random
@@ -15,45 +14,44 @@ import numpy as np
 class intTest(unittest.TestCase):
 	
 	def move_joint(self, pub, jvq):
-		for i in range (7):
+		for i in range (0, 6):
 			pub.publish(jvq[i])
 	
 	def inizializer(self, j_num, string):
+		rospy.loginfo("Ya vnutry inizializer")
 		name =  '/manipulator/joint' + str(j_num) + '_position_controller/' + str(string)
 		return name
-
+	#Callback functions
 	def checkpos(self, msg):
 		rospy.loginfo("Ya tut vse oki")
 		self.assertAlmostEqual(msg.set_point, msg.process_value, delta = 0.01, msg = "joint failed test")
 			
 
 
-	def pusher(self):
+	def test_pusher(self):
+	
+		#node
+		rospy.init_node('pusher', anonymous=True)
 
 		#desired position
-		q1 = 1
-		q2 = 0
-		q3 = 0
-		q4 = 0
-		q5 = 0
-		q6 = 0
-		q_des = [q1, q2, q3, q4, q5, q6]
+		q_des = [np.pi/2, 0.2, -np.pi/3, np.pi, np.pi/4, -np.pi/3]
+		rospy.loginfo(q_des)
+
 
 		#publisher and subscrier inizialization
 		pub = []
 		sub = []
-		for i in range(1,8):
-			pub.append(rospy.Publisher(inizializer(i, 'command'), Float64, queue_size = 10))
-			sub.append(rospy.Subscriber(inizializer(i, 'state'), JointControllerState, checkpos))
-		#node
-		rospy.init_node('pusher', anonymous=True)
+		for i in range(1,7):
+			pub.append(rospy.Publisher(self.inizializer(i, 'command'), Float64, queue_size = 10))
+			sub.append(rospy.Subscriber(self.inizializer(i, 'state'), JointControllerState, self.checkpos))
+
 		rate = rospy.Rate(50)
 
 		rospy.sleep(2)
 
-		time = 100000
+		time = 200
 		for t in range (time):
-			for i in range (0,7):
+			for i in range (0,6):
 				try: 
 					self.move_joint(pub[i], q_des)	
 				except rospy.ROSInterruptException:
