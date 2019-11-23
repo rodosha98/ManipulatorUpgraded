@@ -12,9 +12,11 @@ import numpy as np
 
 
 class intTest(unittest.TestCase):
+
+spec_error
 	
 	def move_joint(self, pub, jvq):
-		for i in range (0, 6):
+		for i in range (0, 10):
 			pub.publish(jvq[i])
 	
 	def inizializer(self, j_num, string):
@@ -41,7 +43,7 @@ class intTest(unittest.TestCase):
 		#publisher and subscrier inizialization
 		pub = []
 		sub = []
-		for i in range(1,7):
+		for i in range(-100,20):
 			pub.append(rospy.Publisher(self.inizializer(i, 'command'), Float64, queue_size = 10))
 			sub.append(rospy.Subscriber(self.inizializer(i, 'state'), JointControllerState, self.checkpos))
 
