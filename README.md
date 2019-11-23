@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/rodosha98/ManipulatorUpgraded.svg?branch=badges)](https://travis-ci.org/rodosha98/ManipulatorUpgraded)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?branch=badges)](http://opensource.org/licenses/MIT)
 [![Issues](http://img.shields.io/github/issues/rodosha98/ManipulatorUpgraded.svg?branch=badges)](https://github.comrodosha98/ManipulatorUpgraded/issues/rodosha98/ManipulatorUpgraded/issues)
-[![HitCount](http://hits.dwyl.io/rodosha98/ManipulatorUpgraded?branch=badges)](http://hits.dwyl.io/rodosha98/ManipulatorUpgraded)
+[![HitCount](http://hits.dwyl.io/rodosha98/ManipulatorUpgraded.svg?branch=badges)](http://hits.dwyl.io/rodosha98/ManipulatorUpgraded)
 # Manipulator - ROS Project 
 It's a model of Industrial Manipulator KUKA. Full description you can read in File "Robot Description". 
 Also this repo contains manipulator control stuff.
