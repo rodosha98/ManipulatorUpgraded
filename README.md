@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/rodosha98/ManipulatorUpgraded.svg?branch=badges)](https://travis-ci.org/rodosha98/ManipulatorUpgraded)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?branch=badges)](http://opensource.org/licenses/MIT)
+[![Issues](http://img.shields.io/github/issues/USER/REPO.svg? = badges)]( https://github.com/USER/REPO/issues )
+
+
 # Manipulator - ROS Project 
 It's a model of Industrial Manipulator KUKA. Full description you can read in File "Robot Description". 
 Also this repo contains manipulator control stuff.
@@ -81,4 +86,11 @@ endif()
 2. catkin_make run_tests && catkin_test_results. It launches all tests you havw that had written in the CMake launch (important) 
 
 As a result you will see, that all you tests passed or not.
+________________________________________________________________________________________________________________________________
+``` bash
+Continious integration in Travis (CI)
+```
 
+Continous integration is the practice of merging in small code changes frequently. The goal is to build healthier software by developing and testing in smaller increments.
+
+With Travis Each commit will be accompanied by a cloud build. On special badges the build status will be displayed: red means there are errors, green means everything is fine.
