@@ -12,20 +12,16 @@ import numpy as np
 
 
 class intTest(unittest.TestCase):
-
-spec_error
 	
 	def move_joint(self, pub, jvq):
-		for i in range (0, 10):
+		for i in range (0, 6):
 			pub.publish(jvq[i])
 	
 	def inizializer(self, j_num, string):
-		rospy.loginfo("Ya vnutry inizializer")
-		name =  '/manipulator/joint' + str(j_num) + '_position_controller/' + str(string)
+		name ='/manipulator/joint' + str(j_num) + '_position_controller/' + str(string)
 		return name
 	#Callback functions
 	def checkpos(self, msg):
-		rospy.loginfo("Ya tut vse oki")
 		self.assertAlmostEqual(msg.set_point, msg.process_value, delta = 0.01, msg = "joint failed test")
 			
 
@@ -37,13 +33,12 @@ spec_error
 
 		#desired position
 		q_des = [np.pi/2, 0.2, -np.pi/3, np.pi, np.pi/4, -np.pi/3]
-		rospy.loginfo(q_des)
 
 
 		#publisher and subscrier inizialization
 		pub = []
 		sub = []
-		for i in range(-100,20):
+		for i in range(1,7):
 			pub.append(rospy.Publisher(self.inizializer(i, 'command'), Float64, queue_size = 10))
 			sub.append(rospy.Subscriber(self.inizializer(i, 'state'), JointControllerState, self.checkpos))
 
