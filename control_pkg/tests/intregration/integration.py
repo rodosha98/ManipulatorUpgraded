@@ -14,8 +14,8 @@ import numpy as np
 class intTest(unittest.TestCase):
 	
 	def move_joint(self, pub, jvq):
-		for i in range (0, 6):
-			pub.publish(jvq[i])
+		for i in range (0,6):
+			pub[i].publish(jvq[i])
 	
 	def inizializer(self, j_num, string):
 		name ='/manipulator/joint' + str(j_num) + '_position_controller/' + str(string)
@@ -48,16 +48,13 @@ class intTest(unittest.TestCase):
 
 		time = 200
 		for t in range (time):
-			for i in range (0,6):
-				try: 
-					self.move_joint(pub[i], q_des)	
-				except rospy.ROSInterruptException:
-					pass
+			try: 
+				self.move_joint(pub, q_des)	
+			except rospy.ROSInterruptException:
+				pass
 			rate.sleep()
 			
 
 if __name__ == '__main__':
 	rostest.rosrun('control_pkg', 'integration', intTest, sysargs = None)
-
-
 
